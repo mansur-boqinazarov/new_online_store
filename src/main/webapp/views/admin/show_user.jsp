@@ -141,11 +141,9 @@
     %>
     <div class="user">
         <div class="user-header">
-            <div class="user-avatar">
-                <img src="https://randomuser.me/api/portraits/men/<%= users.getId() %>.jpg" alt="User Avatar">
-            </div>
+
             <div class="user-basic-info">
-                <div class="user-fullname"><%= users.getFullName() %></div>
+                <div class="user-fullname"><h1><%= users.getFullName() %></h1></div>
             </div>
         </div>
         <div class="user-info">
@@ -164,7 +162,10 @@
             <span class="user-title">CREATED AT</span>
             <span class="user-data"><%= users.getCreatedAt() %></span>
         </div>
-        <button class="user-remove">Remove User</button>
+        <form method="post" action = "${pageContext.request.contextPath}/admin/removeUser">
+        <input type="hidden" name="removeUserId" value="<%=users.getId()%>">
+        <button type="submit" class="user-remove">REMOVE</button>
+        </form>
     </div>
     <%
         }

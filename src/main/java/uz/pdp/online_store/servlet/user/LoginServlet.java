@@ -51,7 +51,6 @@ public class LoginServlet extends HttpServlet {
                         <title>Logged In</title>
                         <!-- CSS styles here -->
                         <style>
-                            /* Add your styles here */
                             body {
                                 font-family: Arial, sans-serif;
                                 text-align: center;
@@ -63,10 +62,9 @@ public class LoginServlet extends HttpServlet {
                         <h1>Successfully logged in</h1>
 
                         <script>
-                            // JavaScript code to redirect after 3 seconds
                             setTimeout(function() {
                                 window.location.href = "/app";
-                            }, 3000); // 3000 milliseconds = 3 seconds
+                            }, 3000);
                         </script>
                     </body>
                     </html>

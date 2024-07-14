@@ -4,6 +4,7 @@ package uz.pdp.online_store.dao.base;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import uz.pdp.online_store.entity.auditable.Auditable;
 
@@ -47,13 +48,11 @@ public abstract class BaseDAO<T extends Auditable, ID extends Serializable> {
         commit();
         return entities;
     }
-    public boolean deleteById(@NotNull ID id) {
-        begin();
-        em.createQuery("delete from " + persistentClass.getSimpleName() + " t where t.id = :id")
+    @Transactional
+    public void deleteById(@NotNull ID id) {
+        em.createQuery("DELETE FROM " + persistentClass.getSimpleName() + " t WHERE t.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();
-        commit();
-        return true;
     }
 
     protected void begin(){em.getTransaction().begin();}

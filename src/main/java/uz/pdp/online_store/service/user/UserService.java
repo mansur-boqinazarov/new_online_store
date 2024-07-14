@@ -73,4 +73,8 @@ public class UserService implements BaseService{
         List<Users> all = userDAO.findAll();
         return all.stream().filter(users -> users.getRole().equals(Role.SELLER)).toList();
     }
+
+    public void removeUser(String removeUserId) {
+        userDAO.deleteById(removeUserId);
+    }
 }

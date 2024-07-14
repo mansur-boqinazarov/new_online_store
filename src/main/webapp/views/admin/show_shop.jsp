@@ -176,12 +176,7 @@
             </i></p>
             <p><strong>Email:</strong> <i><%= users.getUsers().getEmail() %>
             </i></p>
-            <%--            <button type="button" class="delete-button" onclick="<%=userService.userInActive(users.getId())%>"--%>
 
-            <%--            <form method="post" action="/admin/users">--%>
-            <%--                <input type="hidden" name="<%users.getId();%>">--%>
-            <%--            <button type="button" class="delete-button"><%users.getStatus();%></button>--%>
-            <%--            </form>--%>
         </div>
     </div>
     <%
