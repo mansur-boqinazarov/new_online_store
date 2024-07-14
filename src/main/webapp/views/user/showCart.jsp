@@ -201,7 +201,7 @@
     <div class="cart-summary">
         <p>Total: <%=totalBalance%> sum</p>
     </div>
-   <a> <button class="purchase-btn">Sotib olish</button></a>
+    <button class="purchase-btn">Sotib olish</button>
 </div>
 <script>
     function removeItem(productId) {

@@ -20,23 +20,32 @@
         }
         .navbar {
             background-color: #343a40;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand {
             color: #ffffff;
             font-weight: bold;
+            transition: color 0.3s;
+        }
+        .navbar-brand:hover {
+            color: #f8f9fa;
         }
         .form-inline .form-control {
             width: 300px;
+            transition: width 0.3s;
+        }
+        .form-inline .form-control:focus {
+            width: 350px;
         }
         .mySlides img {
             width: 100%;
             height: auto;
         }
-
         .main-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            padding: 0 20px;
         }
         .product-container {
             flex: 3;
@@ -55,30 +64,50 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform 0.3s ease-in-out;
-            height: 480px; /* Increase the height of the container */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+            height: 480px;
+            animation: fadeInUp 0.5s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
         .product-item:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .product-item img {
             width: 100%;
-            height: auto; /* Auto height for full image visibility */
-            object-fit: contain; /* Ensure the entire image is visible */
+            height: auto;
+            object-fit: contain;
             border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        .product-item:hover img {
+            transform: scale(1.1);
         }
         .product-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #333333;
             margin: 10px 0;
             text-align: center;
+            transition: color 0.3s;
+        }
+        .product-title:hover {
+            color: #007bff;
         }
         .add-to-cart {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: auto; /* Push add-to-cart section to the bottom */
+            margin-top: auto;
             width: 100%;
         }
         .quantity-controls button {
@@ -91,6 +120,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .quantity-controls button:hover {
+            background-color: #495057;
         }
         .quantity-controls input {
             width: 40px;
@@ -106,6 +139,10 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            transition: background-color 0.3s;
+        }
+        .add-to-cart button:hover {
+            background-color: #218838;
         }
         .add-to-cart button i {
             margin-right: 5px;
@@ -149,7 +186,6 @@
                     <button type="button" class="animated-button animate__animated animate__fadeInUp">MAHSULOT QO'SHISH</button>
                 </a>
             </li>
-
         </ul>
     </div>
 </nav>
@@ -176,7 +212,6 @@
                     <button type="submit">DELETE</button>
                 </form>
             </div>
-
         </div>
         <%
             }

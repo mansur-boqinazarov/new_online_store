@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
                         <script>
                             // JavaScript code to redirect after 3 seconds
                             setTimeout(function() {
-                                window.location.href = "/";
+                                window.location.href = "/app";
                             }, 3000); // 3000 milliseconds = 3 seconds
                         </script>
                     </body>

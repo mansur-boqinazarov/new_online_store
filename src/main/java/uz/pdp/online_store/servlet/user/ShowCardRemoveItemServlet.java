@@ -25,6 +25,6 @@ public class ShowCardRemoveItemServlet extends HttpServlet {
         OrderItem item = orderItems.stream().filter(orderItem -> orderItem.getId().equals(itemId)).findFirst().get();
         orderItems.remove(item);
         orderService.dao.update(order);
-        resp.sendRedirect("/p/showCart");
+        resp.sendRedirect("/app/showCart");
     }
 }
