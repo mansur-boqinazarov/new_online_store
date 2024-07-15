@@ -49,7 +49,6 @@ public class LoginServlet extends HttpServlet {
                         <meta charset="UTF-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <title>Logged In</title>
-                        <!-- CSS styles here -->
                         <style>
                             body {
                                 font-family: Arial, sans-serif;

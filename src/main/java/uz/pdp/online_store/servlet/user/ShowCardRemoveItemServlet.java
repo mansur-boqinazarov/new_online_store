@@ -15,7 +15,8 @@ import java.util.List;
 
 @WebServlet(name = "ShowCartDeleteItem", urlPatterns = "/showCartRemoveProduct")
 public class ShowCardRemoveItemServlet extends HttpServlet {
-    public  OrderService orderService = new OrderService();
+    public OrderService orderService = new OrderService();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String itemId = req.getParameter("itemId");

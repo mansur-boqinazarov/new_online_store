@@ -12,7 +12,7 @@ import uz.pdp.online_store.service.order.OrderService;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(name = "showCart",urlPatterns = "/showCart")
+@WebServlet(name = "showCart", urlPatterns = "/showCart")
 public class ShowCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,11 +23,12 @@ public class ShowCartServlet extends HttpServlet {
         if (optOrder.isPresent()) {
             req.getSession().setAttribute("order", optOrder.get());
             req.getRequestDispatcher("/views/user/showCart.jsp").forward(req, resp);
-        }else {
+        } else {
             req.setAttribute("message", "Your cart is empty");
             req.getRequestDispatcher("/views/user/showCart.jsp").forward(req, resp);
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

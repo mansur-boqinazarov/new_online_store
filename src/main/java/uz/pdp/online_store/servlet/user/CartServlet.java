@@ -33,6 +33,7 @@ public class CartServlet extends HttpServlet {
         Orders userOrder = getOrder(user);
         Product product = productService.findById(productId);
         orderItemService.addProduct(userOrder, product);
+        resp.sendRedirect("/app");
 
     }
 

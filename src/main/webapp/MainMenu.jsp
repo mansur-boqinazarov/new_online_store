@@ -243,18 +243,17 @@
 <div class="main-container">
     <div class="category-list">
         <h5>Categories</h5>
-        <ul class="list-group">
+        <div class="list-group">
             <%
                 CategoryService categoryService = new CategoryService();
                 List<Category> categories = categoryService.getAllCategories();
                 for (Category category : categories) {
             %>
-            <li class="list-group-item"><%= category.getCategoryName() %>
-            </li>
+            <button type="button" class="list-group-item list-group-item-action"><%= category.getCategoryName() %></button>
             <%
                 }
             %>
-        </ul>
+        </div>
     </div>
     <div class="product-container">
         <%
@@ -270,7 +269,7 @@
                 </div>
             </a>
             <div class="product-details">
-                <p><strong>Price:</strong><%= product.getProductPrice() %> so'm</p>
+                <p><strong>Price:</strong> <%= product.getProductPrice() %> so'm</p>
             </div>
             <div class="add-to-cart">
                 <div class="quantity-controls">
@@ -278,14 +277,20 @@
                     <input type="number" value="1" min="1">
                     <button onclick="updateQuantity(this, 1)">+</button>
                 </div>
-
-                <form method="POST" action = "cart">
+                <% if (user != null) { %>
+                <form method="POST" action="cart">
                     <input type="hidden" name="productId" value="<%= product.getId() %>">
                     <input type="hidden" name="quantity" value="1">
                     <button type="submit">
                         <i class="bi bi-basket"></i> Add to Cart
                     </button>
                 </form>
+                <% } else { %>
+                <a href="loginSignUp"><button type="submit">
+                    <i class="bi bi-basket"></i> Add to Cart
+                </button></a>
+                <% } %>
+
             </div>
         </div>
         <%
