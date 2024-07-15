@@ -27,6 +27,6 @@ public class CreateStoreServlet extends HttpServlet {
 
         service.createShop(userId, shopName, shopDescription);
 
-        resp.sendRedirect("/seller");
+        resp.sendRedirect("/app/seller");
     }
 }

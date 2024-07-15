@@ -12,13 +12,17 @@ import java.io.IOException;
 @WebServlet(name = "removeUser", urlPatterns = "/admin/removeUser")
 public class RemoveUserServlet extends HttpServlet {
 
-    private final UserService userService = new UserService(); // Initialize your service
+    private final UserService userService = new UserService(); // Consider using dependency injection for better practices
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String removeUserId = req.getParameter("removeUserId");
-        userService.removeUser(removeUserId);
-        resp.sendRedirect( "/app/admin/users");
-    }
 
+        if (removeUserId != null && !removeUserId.isEmpty()) {
+            userService.removeUser(removeUserId);
+        } else {
+        }
+
+        resp.sendRedirect(req.getContextPath() + "/app/admin/users");
+    }
 }

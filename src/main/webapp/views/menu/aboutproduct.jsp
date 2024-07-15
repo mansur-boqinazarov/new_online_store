@@ -4,6 +4,7 @@
 <%@ page import="uz.pdp.online_store.util.ImageUtil" %>
 <%@ page import="uz.pdp.online_store.entity.product.Product" %>
 <%@ page import="uz.pdp.online_store.service.product.ProductService" %>
+<%@ page import="uz.pdp.online_store.entity.user.Users" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -168,12 +169,14 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="">
+    <a class="navbar-brand" href="/app">
         Online Store
     </a>
+    <a href="app">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
     </button>
+    </a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <form class="form-inline my-2 my-lg-0 ml-auto">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -240,9 +243,24 @@
                     <input type="number" value="1" min="1">
                     <button onclick="updateQuantity(this, 1)">+</button>
                 </div>
-                <button onclick="addToCart(<%= product.getId() %>)">
-                    <i class="bi bi-basket"></i> Add to Cart
-                </button>
+                <%
+                    Users user = (Users) session.getAttribute("user");
+                %>
+                <% if (user != null) { %>
+                <form method="POST" action="cart">
+                    <input type="hidden" name="productId" value="<%= product.getId() %>">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit">
+                        <i class="bi bi-basket"></i> Add to Cart
+                    </button>
+                </form>
+                <% } else { %>
+                <a href="cart">
+                    <button>
+                        <i class="bi bi-basket"></i> Add to Cart
+                    </button>
+                </a>
+                <% } %>
             </div>
         </div>
         <%
