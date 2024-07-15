@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import uz.pdp.online_store.entity.auditable.Auditable;
 import uz.pdp.online_store.entity.product.Product;
-import uz.pdp.online_store.enums.OrderStatus;
 
 @Entity
 @AllArgsConstructor

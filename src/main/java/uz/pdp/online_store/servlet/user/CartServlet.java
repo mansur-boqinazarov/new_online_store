@@ -28,13 +28,19 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        System.err.println("cartServletning post metodiga keldi");
         String productId = req.getParameter("productId");
         Users user = (Users) req.getSession().getAttribute("user");
-        Orders userOrder = getOrder(user);
+
+        Optional<Orders> orderByUser = orderService.findOrderByUser(user);
+        Orders userOrder = null;
+        if (orderByUser.isPresent()) {
+            userOrder = orderByUser.get();
+        }
         Product product = productService.findById(productId);
         orderItemService.addProduct(userOrder, product);
         resp.sendRedirect("/app");
-
     }
 
     private Orders getOrder(Users user) {

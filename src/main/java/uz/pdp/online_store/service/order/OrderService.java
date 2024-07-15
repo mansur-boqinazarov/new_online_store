@@ -5,7 +5,6 @@ import uz.pdp.online_store.entity.order.OrderItem;
 import uz.pdp.online_store.entity.order.Orders;
 import uz.pdp.online_store.entity.user.Users;
 import uz.pdp.online_store.enums.OrderStatus;
-import uz.pdp.online_store.service.user.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +44,34 @@ public class OrderService {
 
     public Optional<Orders> findOrderByUser(Users user) {
         Orders orders = dao.findByUser(user);
-        if (orders != null) {
+        if (orders != null && !orders.getOrderStatus().equals(OrderStatus.ORDERED)) {
             return Optional.of(orders);
         } else {
-            return Optional.empty();
+            return Optional.of(createOrder(user));
         }
     }
 
+    public void orderedProduct(Users user){
+        Optional<Orders> orderByUser = findOrderByUser(user);
+        if (orderByUser.isPresent()) {
+            Orders orders = orderByUser.get();
+        dao.deleteById(orders.getId());
+            /*
+            orders.setOrderStatus(OrderStatus.ORDERED);
+            dao.update(orders);
+*/
+        }
+    }
 
+    public List<String> historyOrdered(Users user){
+        List<Orders> orders = dao.findAll();
+        List<String> orderIDs = new ArrayList<>();
+        for (Orders order : orders) {
+            if (order.getOrderStatus().equals(OrderStatus.ORDERED)){
+                orderIDs.add(order.getId());
+            }
+        }
+        return orderIDs;
+    }
 
 }

@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="uz.pdp.online_store.entity.order.OrderItem" %>
 <%@ page import="uz.pdp.online_store.util.ImageUtil" %>
+<%@ page import="uz.pdp.online_store.entity.user.Users" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -203,12 +204,10 @@
     <div class="cart-summary">
         <p>Total: <%=totalBalance%> sum</p>
     </div>
-    <button class="purchase-btn">Sotib olish</button>
+    <form method="post" action="/app/purchase">
+        <input type="hidden" name="orderId" value="<%= orderItems.get(0).getOrder().getId() %>">
+        <button type="submit" class="purchase-btn">Sotib olish</button>
+    </form>
 </div>
-<script>
-    function removeItem(productId) {
-
-    }
-</script>
 </body>
 </html>

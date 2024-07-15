@@ -23,19 +23,7 @@ public class Orders extends Auditable {
     private List<OrderItem> orderItems;
     @ManyToOne(cascade = CascadeType.ALL)
     private Users user;
-    private Integer totalPrice = calculate();
-
-    private Integer calculate() {
-        if (orderItems == null || orderItems.isEmpty()) {
-            return 0;
-        } else {
-            return orderItems.stream()
-                    .mapToInt(orderItem -> orderItem.getProduct().getProductPrice() * orderItem.getQuantity())
-                    .sum();
-        }
-
-    }
-
+    private Integer totalPrice;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255) default 'NOT_ORDERED'")
     private OrderStatus orderStatus;
