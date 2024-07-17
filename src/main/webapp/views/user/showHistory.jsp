@@ -1,14 +1,10 @@
-<%@ page import="uz.pdp.online_store.service.order.OrderService" %>
-<%@ page import="uz.pdp.online_store.entity.order.Orders" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="uz.pdp.online_store.entity.order.OrderItem" %>
 <%@ page import="uz.pdp.online_store.util.ImageUtil" %>
-<%@ page import="uz.pdp.online_store.entity.user.Users" %>
-<%@ page import="java.util.Optional" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Cart Products</title>
+    <title>Product History</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
@@ -24,6 +20,25 @@
             margin-bottom: 20px;
             color: #007bff;
             animation: fadeIn 1s ease-in-out;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #d1e7ff;
         }
 
         .cart-container {
@@ -84,39 +99,6 @@
 
         .cart-item-details p {
             margin: 5px 0;
-        }
-
-        .cart-item-actions {
-            display: flex;
-            align-items: center;
-        }
-
-        .cart-item-actions input[type="number"] {
-            width: 50px;
-            text-align: center;
-            margin: 0 10px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            transition: border-color 0.3s;
-        }
-
-        .cart-item-actions input[type="number"]:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        .cart-item-actions .remove-btn {
-            cursor: pointer;
-            color: #d9534f;
-            font-size: 18px;
-            border: none;
-            background: none;
-            transition: color 0.3s;
-        }
-
-        .cart-item-actions .remove-btn:hover {
-            color: #a94442;
         }
 
         .cart-summary {
@@ -211,13 +193,15 @@
     </style>
 </head>
 <body>
+<div class="navbar">
+    <a href="/app">Menu</a>
+</div>
+
 <div class="cart-container">
     <h1>CART PRODUCTS</h1>
     <%
-        Users user = (Users) session.getAttribute("user");
-        Optional<Orders> orderByUser = new OrderService().findOrderByUser(user);
-        Orders order = orderByUser.get();
-        List<OrderItem> orderItems = order.getOrderItems();
+        @SuppressWarnings("unchecked")
+        List<OrderItem> orderItems = (List<OrderItem>) request.getAttribute("allorderitembyorderid");
         for (OrderItem orderItem : orderItems) {
             String base64Image = ImageUtil.getBase64Image(orderItem.getProduct().getPicture().getPicture());
     %>
@@ -228,54 +212,11 @@
                 <div class="product-title"><%= orderItem.getProduct().getProductName() %>
                 </div>
             </a>
-            <p>Product Name: <%= orderItem.getProduct().getProductName() %>
-            </p>
+            <p>Product Name: <%= orderItem.getProduct().getProductName() %></p>
             <p>Price: <%= orderItem.getProduct().getProductPrice() %> сум</p>
         </div>
-        <div class="cart-item-actions">
-            <input type="number" value="<%= orderItem.getQuantity() %>" min="1">
-            <form method="post" action="showCartRemoveProduct">
-                <input type="hidden" name="itemId" value="<%= orderItem.getId() %>">
-                <button type="submit" class="remove-btn">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </form>
-        </div>
     </div>
-    <hr>
-    <%
-        }
-    %>
-    <form method="post" action="/app/purchase">
-        <%if (!orderItems.isEmpty()){%>
-        <input type="hidden" name="orderId" value="<%= orderItems.get(0).getOrder().getId() %>">
-        <button type="submit" class="purchase-btn">Sotib olish</button>
-        <%} else {%>
-        <h1>Sizning savatingiz bo'sh</h1>
-        <%}%>
-    </form>
-    <button onclick="window.location.href='/app'" class="back-btn">Orqaga</button>
-</div>
-
-<div class="history-container">
-    <h2>Oldin sotib olingan mahsulotlar</h2>
-    <ul>
-        <%
-            List<String> historyOrderedItems = new OrderService().historyOrdered(user);
-            for (String item : historyOrderedItems) {
-        %>
-        <li>
-            <form method="post" action="/app/showHistoryProduct">
-                <input type="hidden" name="historyItem" value="<%= item %>">
-                <button type="submit" class="history-item-btn">
-                    <p>Sizning buyurtmangiz IDsi: <%= item %></p>
-                </button>
-            </form>
-        </li>
-        <%
-            }
-        %>
-    </ul>
+    <% } %>
 </div>
 </body>
 </html>

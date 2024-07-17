@@ -75,7 +75,7 @@ public class ProductService {
             return productList;
     }
     public List<Product> searchingProduct(String searchingName){
-        return findSimilarProducts(searchingName, getAllProducts(), 0.7);
+        return findSimilarProducts(searchingName, getAllProducts(), 0.8);
     }
 
     private static List<Product> findSimilarProducts(String word, List<Product> products, double threshold) {
