@@ -1,29 +1,24 @@
-package uz.pdp.online_store.servlet.user;
+package uz.pdp.online_store.servlet.menu;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import uz.pdp.online_store.entity.user.Users;
-import uz.pdp.online_store.service.order.OrderService;
 
 import java.io.IOException;
 
-@WebServlet(name = "purchase", urlPatterns = "/purchase")
-public class PurchaseServlet extends HttpServlet {
-
-    private static final OrderService service = new OrderService();
-
+@WebServlet(name = "categorymenu", urlPatterns = "/app/showCategoryProducts")
+public class MenuByCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.getRequestDispatcher("view/menu/mainmenubycategory.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Users user = (Users)req.getSession().getAttribute("user");
-        service.orderedProduct(user);
-        resp.sendRedirect("/app");
+        String categoryId = req.getParameter("categoryId");
+        System.err.println(categoryId);
+        req.getSession().setAttribute("categoryID", categoryId);
     }
 }

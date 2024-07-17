@@ -43,23 +43,23 @@ public class OrderService {
     }
 
     public Optional<Orders> findOrderByUser(Users user) {
+
         Orders orders = dao.findByUser(user);
-        if (orders != null && !orders.getOrderStatus().equals(OrderStatus.ORDERED)) {
+
+        if (orders != null) {
             return Optional.of(orders);
         } else {
             return Optional.of(createOrder(user));
         }
+
     }
 
     public void orderedProduct(Users user){
         Optional<Orders> orderByUser = findOrderByUser(user);
         if (orderByUser.isPresent()) {
             Orders orders = orderByUser.get();
-        dao.deleteById(orders.getId());
-            /*
             orders.setOrderStatus(OrderStatus.ORDERED);
             dao.update(orders);
-*/
         }
     }
 

@@ -16,12 +16,9 @@ import uz.pdp.online_store.entity.product.Product;
 @Setter
 @SuperBuilder(toBuilder = true)
 public class OrderItem extends Auditable {
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Product product;
     private int quantity = 1;
-
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Orders order;
 }

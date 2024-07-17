@@ -172,7 +172,7 @@
             </i></p>
             <p><strong>Create At:</strong> <i><%= users.getCreatedAt() %>
             </i></p>
-            <p><strong>Owner Name:</strong> <i><%= users.getUsers().getEmail() %>
+            <p><strong>Owner Name:</strong> <i><%= users.getUsers().getFullName() %>
             </i></p>
             <p><strong>Email:</strong> <i><%= users.getUsers().getEmail() %>
             </i></p>

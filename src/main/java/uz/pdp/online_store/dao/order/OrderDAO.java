@@ -3,15 +3,21 @@ package uz.pdp.online_store.dao.order;
 import uz.pdp.online_store.dao.base.BaseDAO;
 import uz.pdp.online_store.entity.order.Orders;
 import uz.pdp.online_store.entity.user.Users;
+import uz.pdp.online_store.enums.OrderStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OrderDAO extends BaseDAO<Orders, String> {
     public Orders findByUser(Users user) {
-        String hql = "SELECT o FROM Orders o WHERE o.user.id = :userId";
-        try {
-            return em.createQuery(hql, Orders.class).setParameter("userId", user.getId()).getSingleResult();
-        } catch (Exception e) {
-            return null;
+        List<Orders> orders = findAll();
+        for (Orders order : orders) {
+            if (order.getUser().getId().equals(user.getId()) &&
+                    order.getOrderStatus().equals(OrderStatus.NOT_ORDERED)) {
+                        return order;
+            }
         }
+        return null;
     }
 }

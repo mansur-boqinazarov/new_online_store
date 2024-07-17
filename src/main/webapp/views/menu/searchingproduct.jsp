@@ -4,6 +4,7 @@
 <%@ page import="uz.pdp.online_store.util.ImageUtil" %>
 <%@ page import="uz.pdp.online_store.entity.product.Product" %>
 <%@ page import="uz.pdp.online_store.service.product.ProductService" %>
+<%@ page import="uz.pdp.online_store.entity.user.Users" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,48 +12,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Store</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="resources/css/mainMenu.css">
     <style>
         body {
             font-family: "Source Sans Pro", sans-serif;
             background-color: #f8f9fa;
         }
+
         .navbar {
             background-color: #343a40;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+
         .navbar-brand {
             color: #ffffff;
             font-weight: bold;
-            transition: color 0.3s;
         }
-        .navbar-brand:hover {
-            color: #f8f9fa;
-        }
+
         .form-inline .form-control {
             width: 300px;
-            transition: width 0.3s;
         }
-        .form-inline .form-control:focus {
-            width: 350px;
+
+        .slideshow-container {
+            position: relative;
+            max-width: 95%;
+            overflow: hidden;
+            margin: auto;
         }
+
+        .mySlides {
+            display: none;
+            width: 100%;
+        }
+
         .mySlides img {
             width: 100%;
             height: auto;
         }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            cursor: pointer;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
         .main-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
-            padding: 0 20px;
         }
+
+        .category-list {
+            flex: 1;
+            max-width: 200px;
+            margin-right: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
         .product-container {
             flex: 3;
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
+
         .product-item {
             flex: 1 1 calc(25% - 40px);
             margin: 10px;
@@ -64,52 +101,42 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
-            height: 480px;
-            animation: fadeInUp 0.5s ease;
+            transition: transform 0.3s ease-in-out;
+            height: 480px; /* Increase the height of the container */
         }
-        @keyframes fadeInUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+
         .product-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .product-item img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            border-radius: 8px;
-            transition: transform 0.3s;
-        }
-        .product-item:hover img {
             transform: scale(1.1);
         }
+
+        .product-item img {
+            width: 100%;
+            height: auto; /* Auto height for full image visibility */
+            object-fit: contain; /* Ensure the entire image is visible */
+            border-radius: 8px;
+        }
+
         .product-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #333333;
             margin: 10px 0;
             text-align: center;
-            transition: color 0.3s;
         }
-        .product-title:hover {
-            color: #007bff;
-        }
+
         .add-to-cart {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: auto;
+            margin-top: auto; /* Push add-to-cart section to the bottom */
             width: 100%;
         }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
         .quantity-controls button {
             border: none;
             background-color: #343a40;
@@ -120,17 +147,15 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-        .quantity-controls button:hover {
-            background-color: #495057;
-        }
+
         .quantity-controls input {
             width: 40px;
             text-align: center;
             border: 1px solid #dddddd;
             margin: 0 5px;
         }
+
         .add-to-cart button {
             background-color: #28a745;
             border: none;
@@ -139,23 +164,23 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            transition: background-color 0.3s;
         }
-        .add-to-cart button:hover {
-            background-color: #218838;
-        }
+
         .add-to-cart button i {
             margin-right: 5px;
         }
+
         @media (max-width: 768px) {
             .product-item {
                 flex: 1 1 calc(50% - 40px);
             }
         }
+
         @media (max-width: 576px) {
             .product-item {
                 flex: 1 1 100%;
             }
+
             .category-list {
                 display: none;
             }
@@ -167,48 +192,114 @@
     <a class="navbar-brand" href="">
         Online Store
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <form class="form-inline my-2 my-lg-0 ml-auto">
-            <h2>SELLER MENU</h2>
+        <form class="form-inline my-2 my-lg-0 ml-auto" method="post" action="/productsearch">
+            <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
         </form>
         <ul class="navbar-nav ml-auto">
+            <%
+                Users user = (Users) session.getAttribute("user");
+                if (user == null) {
+            %>
             <li class="nav-item">
-                <a href=${pageContext.request.contextPath}/seller/createstore>
-                    <button type="button" class="animated-button animate__animated animate__fadeInUp">DO'KON YARATISH</button>
-                </a>
-                <a href=${pageContext.request.contextPath}/seller/mystore>
-                    <button type="button" class="animated-button animate__animated animate__fadeInUp">MENING DO'KONIM</button>
-                </a>
-                <a href=${pageContext.request.contextPath}/seller/addproduct>
-                    <button type="button" class="animated-button animate__animated animate__fadeInUp">MAHSULOT QO'SHISH</button>
-                </a>
+                <a class="nav-link" href="loginSignUp"><i class="bi bi-person"></i> Login / Sign Up</a>
+            </li>
+            <%
+            } else {
+            %>
+            <li class="nav-item">
+                <a class="nav-link" href="userInfo"><i class="bi bi-person"></i> <%= user.getFullName() %></a>
+            </li>
+            <%
+                }
+            %>
+
+            <li class="nav-item">
+                <a class="nav-link" href="showCart"><i class="bi bi-cart"></i> Cart</a>
             </li>
         </ul>
     </div>
 </nav>
+<br>
+<div class="slideshow-container">
+    <div class="mySlides active">
+        <img src="rekPicture/1_resized.png" alt="Image 1">
+    </div>
+    <div class="mySlides">
+        <img src="rekPicture/2_resized.png" alt="Image 2">
+    </div>
+    <div class="mySlides">
+        <img src="rekPicture/3_resized.png" alt="Image 3">
+    </div>
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
 
 <div class="main-container">
+    <div class="category-list">
+        <h5>Categories</h5>
+        <div class="list-group">
+            <%
+                CategoryService categoryService = new CategoryService();
+                List<Category> categories = categoryService.getAllCategories();
+                for (Category category : categories) {
+            %>
+            <form method="POST" action="/app/showCategoryProducts">
+                <input type="hidden" name="categoryId" value="<%= category.getId() %>">
+                <button type="submit" class="list-group-item list-group-item-action"><%= category.getCategoryName() %></button>
+            </form>
+            <%
+                }
+            %>
+        </div>
+    </div>
     <div class="product-container">
         <%
             ProductService productService = new ProductService();
-            List<Product> productList = productService.randomProduct();
+            List<Product> productList;
+            String searchQuery = (String) session.getAttribute("search");
+            if (searchQuery != null && !searchQuery.isEmpty()) {
+                productList = productService.searchingProduct(searchQuery);
+            } else {
+                productList = productService.randomProduct();
+            }
             for (Product product : productList) {
                 String base64Image = ImageUtil.getBase64Image(product.getPicture().getPicture());
         %>
         <div class="product-item">
+            <a href="${pageContext.request.contextPath}/menu/productDetails?id=<%= product.getId() %>">
                 <img src="data:image/jpeg;base64,<%= base64Image %>" alt="Product Image">
-                <div class="product-title"><%= product.getProductName() %></div>
+                <div class="product-title"><%= product.getProductName() %>
+                </div>
+            </a>
             <div class="product-details">
-                <p><strong>Price:</strong><%= product.getProductPrice() %> so'm</p>
+                <p><strong>Price:</strong> <%= product.getProductPrice() %> so'm</p>
             </div>
             <div class="add-to-cart">
-                <form action="${pageContext.request.contextPath}/admin/deleteProduct" method="post">
+                <div class="quantity-controls">
+                    <button onclick="updateQuantity(this, -1)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="updateQuantity(this, 1)">+</button>
+                </div>
+                <% if (user != null) { %>
+                <form method="POST" action="cart">
                     <input type="hidden" name="productId" value="<%= product.getId() %>">
-                    <button type="submit">DELETE</button>
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit">
+                        <i class="bi bi-basket"></i> Add to Cart
+                    </button>
                 </form>
+                <% } else { %>
+                <a href="loginSignUp"><button type="submit">
+                    <i class="bi bi-basket"></i> Add to Cart
+                </button></a>
+                <% } %>
+
             </div>
         </div>
         <%
@@ -236,7 +327,7 @@
         $.post('addToCart', {
             productId: productId,
             quantity: quantity
-        }, function(response) {
+        }, function (response) {
             alert('Product added to cart!');
         });
     }

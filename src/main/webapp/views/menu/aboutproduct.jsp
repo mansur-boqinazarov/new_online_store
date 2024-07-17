@@ -172,7 +172,7 @@
     <a class="navbar-brand" href="/app">
         Online Store
     </a>
-    <a href="app">
+    <a href="/app">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
     </button>

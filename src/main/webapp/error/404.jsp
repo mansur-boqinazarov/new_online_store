@@ -64,7 +64,7 @@
                     <div class="contant_box_404">
                         <h3 class="h2" >Look like you're lost</h3>
                         <p >The page you are looking for not available!</p>
-                        <a href="/">Go to Home</a>
+                        <a href="/app">Go to Home</a>
                     </div>
                 </div>
             </div>

@@ -197,8 +197,8 @@
         <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <form class="form-inline my-2 my-lg-0 ml-auto">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0 ml-auto" method="post" action="/app/productsearch">
+            <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
         </form>
         <ul class="navbar-nav ml-auto">
@@ -249,7 +249,10 @@
                 List<Category> categories = categoryService.getAllCategories();
                 for (Category category : categories) {
             %>
-            <button type="button" class="list-group-item list-group-item-action"><%= category.getCategoryName() %></button>
+            <form method="POST" action="/app/showCategoryProducts">
+                <input type="hidden" name="categoryId" value="<%= category.getId() %>">
+                <button type="submit" class="list-group-item list-group-item-action"><%= category.getCategoryName() %></button>
+            </form>
             <%
                 }
             %>

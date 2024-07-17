@@ -14,6 +14,7 @@
             padding: 20px;
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -54,9 +55,27 @@
         .shop-details strong {
             color: #61dafb;
         }
+
+        .menu-button {
+            background-color: #61dafb;
+            color: #282c34;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #52c0e0;
+        }
     </style>
 </head>
 <body>
+<a href="/app/seller" class="menu-button">Menu</a>
 <div class="shop-container">
     <h1>My Stores</h1>
     <%

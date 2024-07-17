@@ -4,6 +4,7 @@
 <%@ page import="uz.pdp.online_store.entity.order.OrderItem" %>
 <%@ page import="uz.pdp.online_store.util.ImageUtil" %>
 <%@ page import="uz.pdp.online_store.entity.user.Users" %>
+<%@ page import="java.util.Optional" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -133,6 +134,25 @@
             transform: scale(1.05);
         }
 
+        .back-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -169,13 +189,32 @@
 <div class="cart-container">
     <h1>CART PRODUCTS</h1>
     <%
-        Orders order = (Orders) session.getAttribute("order");
+        Users user = (Users) session.getAttribute("user");
+        Optional<Orders> orderByUser = new OrderService().findOrderByUser(user);
+        Orders order = orderByUser.get();
         List<OrderItem> orderItems = order.getOrderItems();
-        int totalBalance = 0;
         for (OrderItem orderItem : orderItems) {
-            totalBalance += orderItem.getProduct().getProductPrice() * orderItem.getProduct().getProductQuantity();
             String base64Image = ImageUtil.getBase64Image(orderItem.getProduct().getPicture().getPicture());
     %>
+    <h2>Oldin sotib olingan mahsulotlar</h2>
+    <ul>
+        <%
+            List<String> historyOrderedItems = new OrderService().historyOrdered(user);
+            for (String item : historyOrderedItems) {
+        %>
+        <li>
+            <form method="post" action="/app/showHistoryProduct">
+                <input type="hidden" name="historyItem" value="<%= item %>">
+                <button type="submit" class="history-item-btn">
+                    <%= item %>
+                </button>
+            </form>
+        </li>
+        <%
+            }
+        %>
+    </ul>
+
     <div class="cart-item">
         <img src="data:image/jpeg;base64,<%= base64Image %>" alt="Product Image">
         <div class="cart-item-details">
@@ -201,13 +240,16 @@
     <%
         }
     %>
-    <div class="cart-summary">
-        <p>Total: <%=totalBalance%> sum</p>
-    </div>
     <form method="post" action="/app/purchase">
+        <%if (!orderItems.isEmpty()){%>
         <input type="hidden" name="orderId" value="<%= orderItems.get(0).getOrder().getId() %>">
         <button type="submit" class="purchase-btn">Sotib olish</button>
+        <%} else {%>
+        <h1>Sizning savatingiz bo'sh</h1>
+        <%}%>
     </form>
+    <button onclick="window.location.href='/app'" class="back-btn">Orqaga</button>
+
 </div>
 </body>
 </html>
