@@ -8,17 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "categorymenu", urlPatterns = "/app/showCategoryProducts")
+@WebServlet(name = "categorymenu", urlPatterns = "/showCategoryProducts")
 public class MenuByCategoryServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("view/menu/mainmenubycategory.jsp").forward(req, resp);
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String categoryId = req.getParameter("categoryId");
-        System.err.println(categoryId);
-        req.getSession().setAttribute("categoryID", categoryId);
+        req.getSession().setAttribute("categoryId", categoryId);
+        req.getRequestDispatcher("/views/menu/mainmenubycategory.jsp").forward(req, resp);
     }
 }

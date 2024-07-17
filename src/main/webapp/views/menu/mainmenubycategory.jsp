@@ -12,8 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Store</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="resources/css/mainMenu.css">
     <style>
         body {
@@ -85,18 +84,16 @@
 
         .product-container {
             flex: 3;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
         }
 
         .product-item {
-            flex: 1 1 calc(25% - 40px);
-            margin: 10px;
+            background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
-            background-color: #fff;
             padding: 10px;
             display: flex;
             flex-direction: column;
@@ -218,7 +215,6 @@
             <%
                 }
             %>
-
             <li class="nav-item">
                 <a class="nav-link" href="showCart"><i class="bi bi-cart"></i> Cart</a>
             </li>
@@ -261,16 +257,15 @@
     <div class="product-container">
         <%
             ProductService productService = new ProductService();
-            String categoryID = (String) request.getSession().getAttribute("categoryID");
-            List<Product> productList = productService.getListByCategory(categoryID);
+            String categoryID = (String) request.getSession().getAttribute("categoryId");
+            List<Product> productList = productService.getAllProductByCategory(categoryID);
             for (Product product : productList) {
                 String base64Image = ImageUtil.getBase64Image(product.getPicture().getPicture());
         %>
         <div class="product-item">
             <a href="${pageContext.request.contextPath}/menu/productDetails?id=<%= product.getId() %>">
                 <img src="data:image/jpeg;base64,<%= base64Image %>" alt="Product Image">
-                <div class="product-title"><%= product.getProductName() %>
-                </div>
+                <div class="product-title"><%= product.getProductName() %></div>
             </a>
             <div class="product-details">
                 <p><strong>Price:</strong> <%= product.getProductPrice() %> so'm</p>
@@ -294,7 +289,6 @@
                     <i class="bi bi-basket"></i> Add to Cart
                 </button></a>
                 <% } %>
-
             </div>
         </div>
         <%
