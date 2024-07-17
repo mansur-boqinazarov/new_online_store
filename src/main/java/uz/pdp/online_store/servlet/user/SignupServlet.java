@@ -25,5 +25,7 @@ public class SignupServlet extends HttpServlet {
         String password = req.getParameter("password");
         String number = req.getParameter("number");
         Users users = userService.signUp(fullName, email, password, number);
+            req.getSession().setAttribute("user", users);
+        resp.sendRedirect("/app");
     }
 }

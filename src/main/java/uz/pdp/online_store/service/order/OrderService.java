@@ -67,7 +67,7 @@ public class OrderService {
         List<Orders> orders = dao.findAll();
         List<String> orderIDs = new ArrayList<>();
         for (Orders order : orders) {
-            if (order.getOrderStatus().equals(OrderStatus.ORDERED)){
+            if (order.getOrderStatus().equals(OrderStatus.ORDERED) && order.getUser().getId().equals(user.getId())){
                 orderIDs.add(order.getId());
             }
         }
